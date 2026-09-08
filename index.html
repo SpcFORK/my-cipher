@@ -6,7 +6,7 @@
   <title>First + Last Letter Cipher</title>
   <style type="text/css">
     /* Micro-2014.CSS */
-    :root { --Page-Width: 605px }
+    :root { --Page-Width: 605px; --Page-TextW: 40ex }
     
     body { 
       container-type: inline-size scroll-state;
@@ -19,9 +19,14 @@
       textarea{ width: var(--Page-Width) !important }
     }
 
-    textarea { max-width: calc(var(--Page-Width) - 35px); width: 40ex }
+    textarea { 
+      max-width: calc(var(--Page-Width) - 35px); 
+      min-width: var(--Page-TextW);
+      width: var(--Page-TextW);
+    }
+
     fieldset { min-width: 0; min-width: min-content }
-    
+
     .left { float: left }
     .right { float: right }
     .clear { clear: both }
