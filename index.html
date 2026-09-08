@@ -1,95 +1,96 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>First + Last Letter Cipher</title>
-<style type="text/css">
-fieldset { min-width: 0 }
-.left { float: left }
-.right { float: right }
-.clear { clear: both }
-textarea { max-width: min-content; width: 40ex }
-</style>
-<script type="text/javascript">
-class MyCipher {
-  static isLetter(t) { return /^[A-Za-z]$/.test(t) }
-  static value(t) { return t.toLowerCase().charCodeAt(0) - 97 }
-  
-  static letter(n, upper) {
-    n = String.fromCharCode(97 + (n % 26 + 26) % 26)
-    return upper ? n.toUpperCase() : n
-  }
-  
-  out
-  x
-  c = 0
-  l = 0
-
-  #zero() { [this.out, this.x, this.c, this.l] = ['', '', 0, 0] }
-  
-  code(t) {
-    this.#zero()
-    for (this.x of t) {
-      if (!MyCipher.isLetter(this.x)) { this.out += this.x; continue }
-      this.c = (MyCipher.value(this.x) + this.l) % 26
-      this.l = this.c
-      this.out += MyCipher.letter(this.c, this.x === this.x.toUpperCase())
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>First + Last Letter Cipher</title>
+  <style type="text/css">
+    fieldset { min-width: 0 }
+    .left { float: left }
+    .right { float: right }
+    .clear { clear: both }
+    textarea { max-width: min-content; width: 40ex }
+  </style>
+  <script type="text/javascript">
+    class MyCipher {
+      static isLetter(t) { return /^[A-Za-z]$/.test(t) }
+      static value(t) { return t.toLowerCase().charCodeAt(0) - 97 }
+      
+      static letter(n, upper) {
+        n = String.fromCharCode(97 + (n % 26 + 26) % 26)
+        return upper ? n.toUpperCase() : n
+      }
+      
+      out
+      x
+      c = 0
+      l = 0
+    
+      #zero() { [this.out, this.x, this.c, this.l] = ['', '', 0, 0] }
+      
+      code(t) {
+        this.#zero()
+        for (this.x of t) {
+          if (!MyCipher.isLetter(this.x)) { this.out += this.x; continue }
+          this.c = (MyCipher.value(this.x) + this.l) % 26
+          this.l = this.c
+          this.out += MyCipher.letter(this.c, this.x === this.x.toUpperCase())
+        }
+        return this
+      }
+    
+      decode(t) {
+        this.#zero()
+        for (this.x of t) {
+          if (!MyCipher.isLetter(this.x)) { this.out += this.x; continue }
+          let v = MyCipher.value(this.x)
+          this.l = (v - this.c + 26) % 26
+          this.c = v
+          this.out += MyCipher.letter(this.l, this.x === this.x.toUpperCase())
+        }
+        return this
+      }
     }
-    return this
-  }
-
-  decode(t) {
-    this.#zero()
-    for (this.x of t) {
-      if (!MyCipher.isLetter(this.x)) { this.out += this.x; continue }
-      let v = MyCipher.value(this.x)
-      this.l = (v - this.c + 26) % 26
-      this.c = v
-      this.out += MyCipher.letter(this.l, this.x === this.x.toUpperCase())
+    
+    var MyController = class {
+      static Cipher = new MyCipher
+    
+      static #ciphertext
+      static #plaintext
+      static #decrypted
+      static #ciphertextInput
+    
+      static #update(e) {
+        // same frame only, else wth?? wyd??
+        if (e.tagName != "FIELDSET") return this.#update(e.parentElement)
+        return [
+          this.#ciphertext ??= e.parentElement.querySelector('#ciphertext'),
+          this.#plaintext ??= e.parentElement.querySelector('#plaintext'),
+          this.#decrypted ??= e.parentElement.querySelector('#decrypted'),
+          this.#ciphertextInput ??= e.parentElement.querySelector('#ciphertextInput')
+        ]
+      }
+    
+      static clearAll(e) { for (e of this.#update(e)) e.value = '' }
+    
+      static code(e) {
+        this.#update(e)
+        this.#ciphertext.value = this.Cipher.code(this.#plaintext.value).out
+      }
+    
+      static decode(e) {
+        this.#update(e)
+        this.#decrypted.value = this.Cipher.decode(this.#ciphertextInput.value).out
+      }
+    
+      static loadExample(e) {
+        this.#update(e)
+        this.#plaintext.value = 'Hello'
+        this.code(e)
+        this.#ciphertextInput.value = this.#ciphertext.value
+        this.decode(e)
+      }
     }
-    return this
-  }
-}
-
-var MyController = class {
-  static Cipher = new MyCipher
-
-  static #ciphertext
-  static #plaintext
-  static #decrypted
-  static #ciphertextInput
-
-  static #update(e) {
-    // same frame only, else wth?? wyd??
-    if (e.tagName != "FIELDSET") return this.#update(e.parentElement)
-    return [
-      this.#ciphertext ??= e.parentElement.querySelector('#ciphertext'),
-      this.#plaintext ??= e.parentElement.querySelector('#plaintext'),
-      this.#decrypted ??= e.parentElement.querySelector('#decrypted'),
-      this.#ciphertextInput ??= e.parentElement.querySelector('#ciphertextInput')
-    ]
-  }
-
-  static clearAll(e) { for (e of this.#update(e)) e.value = '' }
-
-  static code(e) {
-    this.#update(e)
-    this.#ciphertext.value = this.Cipher.code(this.#plaintext.value).out
-  }
-
-  static decode(e) {
-    this.#update(e)
-    this.#decrypted.value = this.Cipher.decode(this.#ciphertextInput.value).out
-  }
-
-  static loadExample(e) {
-    this.#update(e)
-    this.#plaintext.value = 'Hello'
-    this.code(e)
-    this.#ciphertextInput.value = this.#ciphertext.value
-    this.decode(e)
-  }
-}
-</script>
+  </script>
 </head>
 <body>
 
@@ -98,61 +99,77 @@ var MyController = class {
 <fieldset class="left">
 <legend>Encrypt</legend>
 <form onsubmit="MyController.code(this); return false;">
+
 <p>
 <label for="plaintext">Plaintext</label><br>
 <textarea id="plaintext" name="plaintext" rows="8" cols="50" style="width: 906px; height: 261px;"></textarea>
 </p>
+
 <p>
 <input type="submit" value="Encrypt">
 <input type="button" value="Load Hello" onclick="MyController.loadExample(this);">
 <input type="button" value="Clear all" onclick="MyController.clearAll(this);">
 </p>
+
 <p>
 <label for="ciphertext">Ciphertext</label><br>
 <textarea id="ciphertext" name="ciphertext" rows="8" cols="50" readonly="readonly" style="width: 710px; height: 274px;"></textarea>
 </p>
+
 </form>
 </fieldset>
 
 <fieldset class="right">
 <legend>Decrypt</legend>
 <form onsubmit="MyController.decode(this); return false;">
+
 <p>
 <label for="ciphertextInput">Ciphertext</label><br>
 <textarea id="ciphertextInput" name="ciphertextInput" rows="8" cols="50"></textarea>
 </p>
+
 <p>
 <input type="submit" value="Decrypt">
 </p>
+
 <p>
 <label for="decrypted">Plaintext</label><br>
 <textarea id="decrypted" name="decrypted" rows="8" cols="50" readonly="readonly"></textarea>
-</p></form>
+</p>
+
+</form>
 </fieldset>
 
 <hr hidden="" class="clear">
 
 <fieldset>
 <legend>Rule</legend>
+
 <p>The first letter is needed. Use <code>a=0</code> through <code>z=25</code>.</p>
-<pre>c0 = p0 + 0 (mod 26)
+
+<pre>
+c0 = p0 + 0 (mod 26)
 ci = pi + c(i-1) (mod 26)
 </pre>
+
 <p>Non-letters are copied unchanged and do not affect the running value.</p>
-<pre>Hello -&gt; H L W H V -&gt; Hlwhv
+
+<pre>
+Hello -&gt; H L W H V -&gt; Hlwhv
 z + b = a, 25 + 1 = 26 = 0 (mod 26).
 </pre>
+
 </fieldset>
 
 <fieldset>
 <legend>Reversibility</legend>
-<pre>p0 = c0 - 0 (mod 26)
+
+<pre>
+p0 = c0 - 0 (mod 26)
 pi = ci - c(i-1) (mod 26)
 </pre>
+
 </fieldset>
 
-<hr>
-
-
-
-</body></html>
+</body>
+</html>
