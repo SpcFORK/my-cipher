@@ -7,22 +7,23 @@
   <style type="text/css">
     /* Micro-2014.CSS */
     :root { --Page-Width: 605px }
-    @container (width > 605px) { 
-      .right { float: right }
-      textarea { max-width: calc(var(--Page-Width) - 35px); width: 40ex }
+    
+    body { 
+      container-type: inline-size scroll-state;
+      max-width: var(--Page-Width); 
+      margin: auto 
+    }
+    
+    @container (max-width: 605px) { 
+      .right { float: none }
+      textarea{ width: var(--Page-Width) }
     }
 
-    .right { float: none }
-    textarea{ width: var(--Page-Width) }
-
-    /* --- */
-    
-    body { max-width: var(--Page-Width); margin: auto }
-    
+    textarea { max-width: calc(var(--Page-Width) - 35px); width: 40ex }
     fieldset { min-width: 0; min-width: min-content }
     
     .left { float: left }
-    
+    .right { float: right }
     .clear { clear: both }
   </style>
   <script type="text/javascript">
