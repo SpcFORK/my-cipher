@@ -84,15 +84,17 @@
       static #update(e) {
         // same frame only, else wth?? wyd??
         if (e.tagName != "FIELDSET") return this.#update(e.parentElement)
+        e = !e.parentElement ? document.body : e.parentElement 
         return [
-          this.#ciphertext ??= e.parentElement.querySelector('#ciphertext'),
-          this.#plaintext ??= e.parentElement.querySelector('#plaintext'),
-          this.#decrypted ??= e.parentElement.querySelector('#decrypted'),
-          this.#ciphertextInput ??= e.parentElement.querySelector('#ciphertextInput')
+          this.#ciphertext ??= e.querySelector('#ciphertext'),
+          this.#plaintext ??= e.querySelector('#plaintext'),
+          this.#decrypted ??= e.querySelector('#decrypted'),
+          this.#ciphertextInput ??= e.querySelector('#ciphertextInput')
         ]
       }
     
       static clearAll(e) { for (e of this.#update(e)) e.value = '' }
+      static clearResize(e) { for (e of this.#update(e)) e.style = '' }
     
       static code(e) {
         this.#update(e)
@@ -190,6 +192,10 @@ z + b = a, 25 + 1 = 26 = 0 (mod 26).
 p0 = c0 - 0 (mod 26)
 pi = ci - c(i-1) (mod 26)
 </pre>
+
+<hr>
+
+<input type="button" value="Clear Resize" onclick="MyController.clearResize(this);">
 
 </fieldset>
 
