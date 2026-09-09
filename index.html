@@ -83,7 +83,7 @@
     
       static #update(e) {
         // same frame only, else wth?? wyd??
-        if (e.tagName != "FIELDSET") return this.#update(e.parentElement)
+        if (e?.tagName != "FIELDSET") return this.#update(e?.parentElement)
         e = !e.parentElement ? document.body : e.parentElement 
         return [
           this.#ciphertext ??= e.querySelector('#ciphertext'),
