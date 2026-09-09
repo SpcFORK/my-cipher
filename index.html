@@ -84,7 +84,7 @@
       static #update(e) {
         // same frame only, else wth?? wyd??
         switch (e.tagName) {
-          case "FIELDSET": 
+          case "FIELDSET": e = e.parentElement
           case "BODY": break;
           default: return this.#update(e.parentElement)
         }
