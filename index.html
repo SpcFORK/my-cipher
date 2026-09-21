@@ -17,15 +17,19 @@
     @container (max-width: 600px) { 
       .Left { float: unset !important }
       .Right { float: unset !important }
-      .Clear { Clear: unset !important }
+      .Clear { clear: unset !important }
       .Page { width: unset !important }
       .PageW { width: unset !important }
-      textarea { width: 100% !important; min-width: unset !important }
+      .Unpad-M { padding: unset !important }
+      .Unmargin-M { margin: unset !important }
+      textarea { width: 99% !important; min-width: unset !important }
     }
     
-    .Left { float: Left }
-    .Right { float: Right }
-    .Clear { Clear: both }
+    .Left { float: left }
+    .Right { float: right }
+    .Clear { clear: both }
+    .Unpad { padding: unset }
+    .Unmargin { margin: unset }
     .Page { width: var(--Page-Width) }
     .PageW { width: var(--Page-TextW) }
     
