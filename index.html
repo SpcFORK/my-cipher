@@ -30,11 +30,9 @@
     .PageW { width: var(--Page-TextW) }
     
     textarea {
-      @starting-style {
-        max-width: calc(var(--Page-Width) - 35px); 
-        min-width: var(--Page-TextW);
-        width: var(--Page-TextW);
-      }
+      max-width: calc(var(--Page-Width) - 35px); 
+      min-width: var(--Page-TextW);
+      @starting-style { width: var(--Page-TextW) }
     }
     
     fieldset {
