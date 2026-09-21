@@ -15,22 +15,34 @@
     }
     
     @container (max-width: 600px) { 
-      .left { float: none !important }
-      .right { float: none !important }
-      textarea{ width: var(--Page-Width) !important; min-width: unset !important }
+      .Left { float: unset !important }
+      .Right { float: unset !important }
+      .Clear { Clear: unset !important }
+      .Page { width: unset !important }
+      .PageW { width: unset !important }
+      textarea { width: 100% !important; min-width: unset !important }
     }
-
-    textarea { 
-      max-width: calc(var(--Page-Width) - 35px); 
-      min-width: var(--Page-TextW);
-      width: var(--Page-TextW);
+    
+    .Left { float: Left }
+    .Right { float: Right }
+    .Clear { Clear: both }
+    .Page { width: var(--Page-Width) }
+    .PageW { width: var(--Page-TextW) }
+    
+    textarea {
+      @starting-style {
+        max-width: calc(var(--Page-Width) - 35px); 
+        min-width: var(--Page-TextW);
+        width: var(--Page-TextW);
+      }
     }
-
-    fieldset { min-width: 0; min-width: min-content }
-
-    .left { float: left }
-    .right { float: right }
-    .clear { clear: both }
+    
+    fieldset {
+      @starting-style {
+    	min-width: 0; 
+      	min-width: min-content;
+      }
+    }
   </style>
   <script type="text/javascript">
     class MyCipher {
@@ -96,8 +108,8 @@
         ]
       }
     
-      static clearAll(e) { for (e of this.#update(e)) e.value = '' }
-      static clearResize(e) { for (e of this.#update(e)) e.style = '' }
+      static ClearAll(e) { for (e of this.#update(e)) e.value = '' }
+      static ClearResize(e) { for (e of this.#update(e)) e.style = '' }
     
       static code(e) {
         this.#update(e)
@@ -123,7 +135,7 @@
 
 <h1>SpcFORKs Cipher</h1>
 
-<fieldset class="left">
+<fieldset class="Left">
 <legend>Encrypt</legend>
 <form onsubmit="MyController.code(this); return false;">
 
@@ -145,7 +157,7 @@
 </form>
 </fieldset>
 
-<fieldset class="right">
+<fieldset class="Right">
 <legend>Decrypt</legend>
 <form onsubmit="MyController.decode(this); return false;">
 
@@ -156,7 +168,7 @@
 
 <p>
 <input type="submit" value="Decrypt">
-<input type="button" value="Clear all" onclick="MyController.clearAll(this);">
+<input type="button" value="Clear all" onclick="MyController.ClearAll(this);">
 </p>
 
 <p>
@@ -167,7 +179,7 @@
 </form>
 </fieldset>
 
-<hr hidden="" class="clear">
+<hr hidden class="Clear">
 
 <fieldset>
 <legend>Rule</legend>
@@ -200,7 +212,7 @@ pi = ci - c(i-1) (mod 26)
   
 <hr>
 
-<input type="button" value="Clear Resize" onclick="MyController.clearResize(this);">
+<input type="button" value="Clear Resize" onclick="MyController.ClearResize(this);">
 
 </body>
 </html>
